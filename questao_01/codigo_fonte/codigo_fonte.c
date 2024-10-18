@@ -181,7 +181,7 @@ void exibir_notas_aluno_disciplina(AlunoNo *aluno, CursoNo *curso, int matricula
 
     NotaNo *nota = aluno_encontrado->notas;
     while (nota != NULL) {
-        if (nota->codigo_disc iplina == codigo_disciplina) {
+        if (nota->codigo_disciplina == codigo_disciplina) {
             printf("Nota Final: %.2f, Semestre: %d\n", nota->nota_final, nota->semestre);
             return;
         }
@@ -463,7 +463,7 @@ void localizar_matricula(MatriculaNo *matricula, int codigo_disciplina, int *enc
         return;
     }
 
-    if (codigo_disciplina < matricula->codigo_ disciplina) {
+    if (codigo_disciplina < matricula->codigo_disciplina) {
         localizar_matricula(matricula->esquerda, codigo_disciplina, encontrado);
     } else {
         localizar_matricula(matricula->direita, codigo_disciplina, encontrado);
@@ -548,7 +548,7 @@ void exibir_nota_aluno_disciplina(AlunoNo *aluno, CursoNo *curso, int matricula,
             NotaNo *nota = aluno->notas;
             while (nota != NULL) {
                 if (nota->codigo_disciplina == codigo_disciplina) {
-                    Discipli No *disciplina = curso->disciplinas;
+                    DisciplinaNo *disciplina = curso->disciplinas;
                     while (disciplina != NULL) {
                         if (disciplina->codigo == codigo_disciplina) {
                             printf("Aluno: %s\n", aluno->nome);
@@ -663,7 +663,7 @@ int remover_disciplina_curso(CursoNo **cursos, AlunoNo *alunos, int idcurso, int
             } else if (idcurso < (*cursos)->codigo) {
                 remove = remover_disciplina_curso(&(*cursos)->esquerda, alunos, idcurso, codigo_disciplina);
             } else {
-                remove = remover _disciplina_curso(&(*cursos)->direita, alunos, idcurso, codigo_disciplina);
+                remove = remover_disciplina_curso(&(*cursos)->direita, alunos, idcurso, codigo_disciplina);
             }
         }
     }
@@ -791,8 +791,8 @@ void consultar_historico(AlunoNo *aluno, CursoNo *curso, int matricula) {
 
 // Funções auxiliares adicionais
 
-ArvoreCursos* buscar_curso(ArvoreCursos *curso, int codigo_curso) {
-    ArvoreCursos *resultado = NULL;
+CursoNo* buscar_curso(CursoNo*curso, int codigo_curso) {
+    CursoNo *resultado = NULL;
 
     if (curso != NULL) {
         if (curso->codigo == codigo_curso) {

@@ -5,7 +5,7 @@
 
 void menu_geral() {
     printf(
-        "alterei======================= MENU =======================\n"
+        "======================= MENU =======================\n"
         "[ 1 ] Cadastrar Aluno\n"
         "[ 2 ] Cadastrar Curso\n"
         "[ 3 ] Cadastrar Disciplina\n"
@@ -29,15 +29,15 @@ void menu_geral() {
 int main() {
     int opcao_menu;
 
-    Alunos *aluno = NULL;
-    ArvoreCursos *arvore_curso = NULL;
-    ArvoreNotas *arvore_notas = NULL;
-    ArvoreDisciplinas *arvore_disciplina = NULL, *disciplina;
-    ArvoreMatriculas *arvore_matricula = NULL;
+    AlunoNo *alunos = NULL;
+    CursoNo *arvore_curso = NULL;
+    NotaNo *arvore_notas = NULL;
+    DisciplinaNo *arvore_disciplina = NULL;
+    MatriculaNo *arvore_matricula = NULL;
 
-    int matricula, codigo_curso, quantidade_periodos, codigo_disciplina, matricula_disciplina, remover_disciplina, codigo_gerado;
+    int matricula, codigo_curso, quantidade_periodos, codigo_disciplina, matricula_disciplina, codigo_gerado;
     float periodo;
-    char nome[40], nome_curso[100];
+    char nome[100], nome_curso[100];
 
     do {
         menu_geral();
@@ -56,7 +56,7 @@ int main() {
                 scanf("%d", &matricula);
                 printf("Informe o código do curso: ");
                 scanf("%d", &codigo_curso);
-                cadastrar_aluno(&aluno, matricula, nome, codigo_curso);
+                adicionar_aluno(&alunos, matricula, nome, codigo_curso);
                 break;
 
             case 2:
@@ -67,7 +67,7 @@ int main() {
                 scanf(" %[^\n]s", nome_curso);
                 printf("Informe a quantidade de períodos: ");
                 scanf("%d", &quantidade_periodos);
-                cadastrar_curso(&arvore_curso, codigo_curso, nome_curso, quantidade_periodos);
+                adicionar_curso(&arvore_curso, codigo_curso, nome_curso, quantidade_periodos);
                 break;
 
             case 3:
@@ -76,13 +76,13 @@ int main() {
                     printf("Erro: Nenhum curso cadastrado. Cadastre um curso primeiro.\n");
                     break;
                 }
-                disciplina = (ArvoreDisciplinas *)malloc(sizeof(ArvoreDisciplinas));
+                DisciplinaNo *disciplina = (DisciplinaNo *)malloc(sizeof(DisciplinaNo));
                 if (!disciplina) {
                     printf("Erro ao alocar memória para disciplina.\n");
                     break;
                 }
                 printf("Digite o nome da disciplina: ");
-                scanf(" %[^\n]s", disciplina->nome_disciplina);
+                scanf(" %[^\n]s", disciplina->nome);
                 printf("Digite o código do curso: ");
                 scanf("%d", &codigo_curso);
                 printf("Digite a carga horária da disciplina: ");
@@ -90,7 +90,7 @@ int main() {
                 printf("Digite o período da disciplina: ");
                 scanf("%d", &disciplina->periodo);
 
-                ArvoreCursos *curso_encontrado = buscar_curso(arvore_curso, codigo_curso);
+                CursoNo *curso_encontrado = buscar_curso_por_codigo(arvore_curso, codigo_curso);
                 if (!curso_encontrado) {
                     printf("Erro: Curso não encontrado.\n");
                     free(disciplina);
@@ -98,9 +98,9 @@ int main() {
                 }
 
                 gerar_codigo_disciplina(&codigo_gerado);
-                disciplina->codigo_disciplina = codigo_gerado;
-                remover_disciplina = cadastrar_disciplina(&curso_encontrado, disciplina, codigo_curso);
-                if (remover_disciplina) {
+                disciplina->codigo = codigo_gerado;
+                int resultado = adicionar_disciplina(&curso_encontrado, disciplina, codigo_curso);
+                if (resultado) {
                     printf("Disciplina cadastrada com sucesso! Código gerado: %d\n", codigo_gerado);
                 } else {
                     printf("Erro ao cadastrar disciplina.\n");
