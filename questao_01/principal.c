@@ -5,7 +5,7 @@
 
 void menu_geral() {
     printf(
-        "======================= MENU =======================\n"
+        "alterei======================= MENU =======================\n"
         "[ 1 ] Cadastrar Aluno\n"
         "[ 2 ] Cadastrar Curso\n"
         "[ 3 ] Cadastrar Disciplina\n"
